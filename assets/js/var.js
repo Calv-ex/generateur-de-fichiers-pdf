@@ -1,6 +1,7 @@
 export function getElements() {
   return {
-    zoomZone: document.getElementById('zone-zoom'),
+    personalsDataForm: document.getElementById('personalsData-form'),
+    previewZone: document.getElementById('preview-zone'),
 
     formlink: document.getElementById("formlink"),
     sidebar: document.getElementById('sidebar'),
@@ -20,17 +21,22 @@ export function getElements() {
 
     templatesContainer: document.getElementById('templates-container'),
 
+    // Récupération des champs
+    inputsToPreview : document.querySelectorAll('input[data-preview]'),
     firstnameInput: document.getElementById('firstname'),
     nameInput: document.getElementById('name'),
     jobTitleInput: document.getElementById('job-title'),
+    introductionInput: document.getElementById('introduction'),
     pdpInput: document.getElementById('pdp'),
     mailInput: document.getElementById('mail'),
     telInput: document.getElementById('tel'),
 
+    // Récupération des sections de prévisualisation
     previewFirstname: document.querySelector('.fullname__firstname'),
     previewName: document.querySelector('.fullname__name'),
     previewPdp: document.querySelector('.pdp-preview'),
     previewJobTitle: document.querySelector('.main-data__job-title'),
+    previewIntroduction: document.querySelector('.introduction-preview'),
     previewMail: document.querySelector('.mail-preview'),
     previewTel: document.querySelector('.tel-preview'),
     previewSkills: document.querySelector('.skills-preview'),

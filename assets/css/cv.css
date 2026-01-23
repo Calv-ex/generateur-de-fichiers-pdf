@@ -7,13 +7,6 @@
   position: relative;
 }
 
-.zoomBtn-container
-{
-  position: absolute;
-  bottom: 5%;
-  right: 5%;
-}
-
 .sidebar
 {
   width: clamp(360px, 40dvw, 700px);
@@ -211,13 +204,25 @@
   flex-direction: column;
   gap: 0.5rem;
   padding: 0.75rem 0;
+  position: relative;
 }
 
-.block input
+.block input,
+.form-select
 {
-  width: 90%;
+  width: 100%;
   display: block;
   margin: 0 auto;
+}
+
+.close-block
+{
+  position: absolute;
+  background-color: #ff1818;
+  border-radius: 50%;
+  right: -13px;
+  top: 0;
+  cursor: pointer;
 }
 
 .displayContainer
@@ -228,16 +233,11 @@
   justify-content: center;
   align-items: center;
   overflow: auto;
-  flex-grow: 1 1 auto;
+  flex-grow: 1 1 auto; 
   background-color: rgb(232, 232, 232);
 }
 
-.zone-zoom
-{
-  overflow: auto;
-}
-
-#zone-zoom
+#preview-zone
 {
   flex-shrink: 0;
 }

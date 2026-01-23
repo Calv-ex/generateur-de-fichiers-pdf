@@ -1,4 +1,6 @@
-export function templateSelection ({templatesContainer, zoomZone})
+import { renderPreview } from "./renderPreview.js";
+
+export function templateSelection({ templatesContainer, previewZone })
 {
   templatesContainer.addEventListener("click", (e) =>
   {
@@ -9,18 +11,13 @@ export function templateSelection ({templatesContainer, zoomZone})
     const fileName = templateName + ".php";
 
     fetch("../templates/" + fileName)
-      .then(res =>
-      {
-        if (!res.ok) throw new Error("Template introuvable");
-        return res.text();
-      })
+      .then(res => res.text())
       .then(html =>
       {
-        zoomZone.innerHTML = html;
-      })
-      .catch(() =>
-      {
-        zoomZone.innerHTML = "<p>Erreur : template non trouvé</p>";
+        previewZone.innerHTML = html;
+
+        // 🔥 RECONSTRUIT LA PREVIEW DEPUIS LE STATE
+        renderPreview();
       });
   });
 }

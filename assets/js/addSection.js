@@ -1,135 +1,219 @@
-export function addSection({ button, container, type = 'default', previewContainer = null })
+import { cvState } from "./cvState.js";
+import { renderPreview } from "./renderPreview.js";
+import { dateToFr } from "./dateUtils.js";
+
+
+export function addSection({ button, container, type = 'default', previewSelector })
 {
   button.addEventListener("click", (e) =>
   {
     e.preventDefault();
-
+    const previewContainer = document.querySelector(previewSelector);
+    if (!previewContainer) return;
     const block = document.createElement("div");
-    block.classList.add("block", "card");
+    block.classList.add("block");
+
+    const cross = document.createElement("img");
+    cross.classList.add('close-block')
+    cross.src = "../assets/images/x.svg";
+    block.appendChild(cross);
+    cross.addEventListener('click', () =>
+    {
+      cvState.courses = cvState.courses.filter(c => c !== course);
+      block.remove();
+      renderPreview();
+    })
 
     const input = document.createElement("input");
     input.classList.add("form-control");
     input.type = "text";
+    input.setAttribute('required', true);
 
     // Gestion des compétences
-    if (type === 'skill') 
+    if (type === "skill")
     {
       input.placeholder = "Compétence";
-      const preview = document.createElement("div");
-      previewContainer.appendChild(preview);
-      input.addEventListener("input", () => preview.textContent = input.value);
-      
-      // On ajoute l'input au bloc
+
+      const select = document.createElement("select");
+      select.classList.add("form-select");
+
+      ["débutant", "intermédiaire", "avancé"].forEach(level => {
+        const opt = document.createElement("option");
+        opt.value = level;
+        opt.textContent = level;
+        select.appendChild(opt);
+      });
+
+      const skill = { label: "", level: select.value };
+      cvState.skills.push(skill);
+
+      input.addEventListener("input", () => {
+        skill.label = input.value;
+        renderPreview();
+      });
+
+      select.addEventListener("change", () => {
+        skill.level = select.value;
+        renderPreview();
+      });
+
       block.appendChild(input);
+      block.appendChild(select);
     }
-    
     // Gestion des hobbies
     else if (type === 'hobby') 
     {
       input.placeholder = "Centre d'intérêt";
-      const preview = document.createElement("div");
-      previewContainer.appendChild(preview);
-      input.addEventListener("input", () => preview.textContent = input.value);
-      
-      // On ajoute l'input au bloc
+
+      const hobby = { label: "" };
+      cvState.hobbies.push(hobby);
+
+      input.addEventListener("input", () =>
+      {
+        hobby.label = input.value;
+        renderPreview();
+      });
+
       block.appendChild(input);
     }
-    
     // Gestion des expériences (avec inputs supplémentaires)
     else if (type === 'experience')
     {
       input.placeholder = "Titre de l'expérience";
-      
-      // Création de l'input pour la localisation
-      const locationInput = document.createElement('input');
-      locationInput.placeholder = "Lieu / Adresse";
-      locationInput.classList.add('form-control');
-      locationInput.type = "text";
-      
-      // Création de l'input pour la date de début
-      const startDateInput = document.createElement('input');
-      startDateInput.placeholder = "Date de début";
-      startDateInput.classList.add('form-control');
-      startDateInput.type = "text"; // Tu pourrais aussi utiliser type="date"
-      
-      // Création de l'input pour la date de fin
-      const endDateInput = document.createElement('input');
-      endDateInput.placeholder = "Date de fin";
-      endDateInput.classList.add('form-control');
-      endDateInput.type = "text"; // Tu pourrais aussi utiliser type="date"
-      
-      // Si tu as un conteneur de preview, tu peux créer les éléments de prévisualisation
-      if (previewContainer)
-      {
-        const previewTitle = document.createElement("h3");
-        const previewLocation = document.createElement("p");
-        const previewPeriod = document.createElement("p");
-        
-        previewContainer.appendChild(previewTitle);
-        previewContainer.appendChild(previewLocation);
-        previewContainer.appendChild(previewPeriod);
-        
-        // Liaison des inputs avec la prévisualisation
-        input.addEventListener("input", () => previewTitle.textContent = input.value);
-        locationInput.addEventListener("input", () => previewLocation.textContent = locationInput.value);
-        startDateInput.addEventListener("input", () => {
-          previewPeriod.textContent = `${startDateInput.value} - ${endDateInput.value}`;
-        });
-        endDateInput.addEventListener("input", () => {
-          previewPeriod.textContent = `${startDateInput.value} - ${endDateInput.value}`;
-        });
-      }
-      
-      // IMPORTANT : On ajoute tous les inputs au bloc dans l'ordre voulu
-      block.appendChild(input);
-      block.appendChild(locationInput);
-      block.appendChild(startDateInput);
-      block.appendChild(endDateInput);
-    }
-    
-    // Gestion des formations (similaire aux expériences)
-    else if (type === 'course')
-    {
-      input.placeholder = "Titre de la formation";
-      
+
       const locationInput = document.createElement('input');
       locationInput.placeholder = "Établissement / Lieu";
       locationInput.classList.add('form-control');
       locationInput.type = "text";
-      
+
+      const descriptionInput = document.createElement('input');
+      descriptionInput.placeholder = "Description";
+      descriptionInput.classList.add('form-control');
+      descriptionInput.type = "text";
+
       const startDateInput = document.createElement('input');
-      startDateInput.placeholder = "Date de début";
+      startDateInput.type = "date";
       startDateInput.classList.add('form-control');
-      startDateInput.type = "text";
-      
+
       const endDateInput = document.createElement('input');
-      endDateInput.placeholder = "Date de fin";
+      endDateInput.type = "date";
       endDateInput.classList.add('form-control');
-      endDateInput.type = "text";
-      
-      // Même logique de preview si nécessaire
-      if (previewContainer)
+
+      const experience =
       {
-        const previewTitle = document.createElement("h3");
-        const previewLocation = document.createElement("p");
-        const previewPeriod = document.createElement("p");
-        
-        previewContainer.appendChild(previewTitle);
-        previewContainer.appendChild(previewLocation);
-        previewContainer.appendChild(previewPeriod);
-        
-        input.addEventListener("input", () => previewTitle.textContent = input.value);
-        locationInput.addEventListener("input", () => previewLocation.textContent = locationInput.value);
-        startDateInput.addEventListener("input", () => {
-          previewPeriod.textContent = `${startDateInput.value} - ${endDateInput.value}`;
-        });
-        endDateInput.addEventListener("input", () => {
-          previewPeriod.textContent = `${startDateInput.value} - ${endDateInput.value}`;
-        });
-      }
-      
+        title: "",
+        location: "",
+        description: "",
+        start: "",
+        end: ""
+      };
+
+      cvState.experiences.push(experience);
+
+      input.addEventListener("input", () =>
+      {
+        experience.title = input.value;
+        renderPreview();
+      });
+
+      locationInput.addEventListener("input", () =>
+      {
+        experience.location = locationInput.value;
+        renderPreview();
+      });
+
+      descriptionInput.addEventListener("input", () =>
+      {
+        experience.description = descriptionInput.value;
+        renderPreview();
+      });
+
+      startDateInput.addEventListener("input", () =>
+      {
+        experience.start = startDateInput.value;
+        renderPreview();
+      });
+
+      endDateInput.addEventListener("input", () =>
+      {
+        experience.end = endDateInput.value;
+        renderPreview();
+      });
+
       block.appendChild(input);
       block.appendChild(locationInput);
+      block.appendChild(descriptionInput);
+      block.appendChild(startDateInput);
+      block.appendChild(endDateInput);
+    }
+
+    // Gestion des formations (similaire aux expériences)
+    else if (type === 'course')
+    {
+      input.placeholder = "Titre de la formation";
+
+      const locationInput = document.createElement('input');
+      locationInput.placeholder = "Établissement / Lieu";
+      locationInput.classList.add('form-control');
+      locationInput.type = "text";
+
+      const descriptionInput = document.createElement('input');
+      descriptionInput.placeholder = "Description";
+      descriptionInput.classList.add('form-control');
+      descriptionInput.type = "text";
+
+      const startDateInput = document.createElement('input');
+      startDateInput.type = "date";
+      startDateInput.classList.add('form-control');
+
+      const endDateInput = document.createElement('input');
+      endDateInput.type = "date";
+      endDateInput.classList.add('form-control');
+
+      const course =
+      {
+        title: "",
+        location: "",
+        description: "",
+        start: "",
+        end: ""
+      };
+
+      cvState.courses.push(course);
+
+      input.addEventListener("input", () =>
+      {
+        course.title = input.value;
+        renderPreview();
+      });
+
+      locationInput.addEventListener("input", () =>
+      {
+        course.location = locationInput.value;
+        renderPreview();
+      });
+
+      descriptionInput.addEventListener("input", () =>
+      {
+        course.description = descriptionInput.value;
+        renderPreview();
+      });
+
+      startDateInput.addEventListener("input", () =>
+      {
+        course.start = startDateInput.value;
+        renderPreview();
+      });
+
+      endDateInput.addEventListener("input", () =>
+      {
+        course.end = endDateInput.value;
+        renderPreview();
+      });
+
+      block.appendChild(input);
+      block.appendChild(locationInput);
+      block.appendChild(descriptionInput);
       block.appendChild(startDateInput);
       block.appendChild(endDateInput);
     }

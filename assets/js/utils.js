@@ -1,25 +1,21 @@
 import { getElements } from "./var.js";
+import { cvState } from "./cvState.js";
 import { openSidebar } from "./openSidebar.js";
 import { templateSelection } from "./templateSelection.js";
 import { addSection } from "./addSection.js";
-import { displayData } from "./displayData.js";
+import { renderPreview } from "./renderPreview.js";
 
 document.addEventListener("DOMContentLoaded", () =>
 {
 
   const
   {
+    personalsDataForm,
     formlink,
     sidebar,
     closeBtn,
     templatesContainer,
-    zoomZone,
-
-    addExperienceBtn,
-    experiencesContainer,
-
-    addCourseBtn,
-    coursesContainer,
+    previewZone,
 
     addSkillBtn,
     skillsContainer,
@@ -27,6 +23,13 @@ document.addEventListener("DOMContentLoaded", () =>
     addHobbyBtn,
     hobbiesContainer,
 
+    addExperienceBtn,
+    experiencesContainer,
+
+    addCourseBtn,
+    coursesContainer,
+
+    inputsToPreview,
     firstnameInput,
     nameInput,
     jobTitleInput,
@@ -47,48 +50,76 @@ document.addEventListener("DOMContentLoaded", () =>
   } = getElements();
 
   openSidebar({formlink, sidebar, closeBtn});
-  templateSelection({templatesContainer, zoomZone});
-  
+  templateSelection({templatesContainer, previewZone, form: personalsDataForm});
+
+  addSection({ 
+    button: addSkillBtn, 
+    container: skillsContainer, 
+    type: 'skill',
+    previewSelector: '.skills-preview',
+  });
+
+   addSection({ 
+    button: addHobbyBtn, 
+    container: hobbiesContainer, 
+    type: 'hobby',
+    previewSelector: '.hobbies-preview',
+  });
 
   addSection({ 
     button: addExperienceBtn, 
     container: experiencesContainer, 
     type: 'experience',
-    previewContainer: previewExperiences
+    previewSelector: '.experiences-preview',
   });
 
   addSection({ 
     button: addCourseBtn, 
     container: coursesContainer, 
     type: 'course',
-    previewContainer: previewCourses
+    previewSelector: '.courses-preview',
   });
 
-  addSection({ 
-    button: addSkillBtn, 
-    container: skillsContainer, 
-    type: 'skill',
-    previewContainer: previewSkills 
+  firstnameInput.addEventListener("input", () =>
+  {
+    cvState.identity.firstname = firstnameInput.value;
+    renderPreview();
   });
 
-  addSection({ 
-    button: addHobbyBtn, 
-    container: hobbiesContainer, 
-    type: 'hobby',
-    previewContainer: previewHobbies 
+  nameInput.addEventListener("input", () =>
+  {
+    cvState.identity.name = nameInput.value;
+    renderPreview();
   });
 
-  nameInput.addEventListener("input", () => displayData(nameInput, previewName));
-  firstnameInput.addEventListener("input", () => displayData(firstnameInput, previewFirstname));
-  jobTitleInput.addEventListener("input", () => displayData(jobTitleInput, previewJobTitle));
-  mailInput.addEventListener("input", () => displayData(mailInput, previewMail));
-  telInput.addEventListener("input", () => displayData(telInput, previewTel));
+  jobTitleInput.addEventListener("input", () =>
+  {
+    cvState.identity.jobTitle = jobTitleInput.value;
+    renderPreview();
+  });
+
+  mailInput.addEventListener("input", () =>
+  {
+    cvState.identity.mail = mailInput.value;
+    renderPreview();
+  });
+
+  telInput.addEventListener("input", () =>
+  {
+    cvState.identity.tel = telInput.value;
+    renderPreview();
+  });
+
   pdpInput.addEventListener("change", () => {
     const file = pdpInput.files[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = () => previewPdp.src = reader.result;
+    reader.onload = () =>
+    {
+      cvState.identity.photo = reader.result;
+      renderPreview();
+    };
     reader.readAsDataURL(file);
   });
 });

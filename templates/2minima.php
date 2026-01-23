@@ -6,7 +6,7 @@
       <div class="col-4 px-4 py-5 text-center bg-dark text-white">
 
         <!-- Photo -->
-        <div class="mx-auto mb-5" style="width:120px; height:120px;">
+        <div class="mx-auto mb-5" style="width:140px; height:140px;">
           <img
             class="img-fluid rounded-circle border border-3 border-white pdp-preview"
             alt="Photo de profil"
@@ -42,11 +42,12 @@
 
         <!-- IDENTITÉ -->
         <div class="mb-5 pb-3 border-bottom border-dark border-2">
-          <h1 class="mb-1 text-dark fw-bold text-uppercase">
-            <span class="fullname__firstname"></span>
-            <span class="fullname__name"></span>
-          </h1>
-          <h5 class="text-secondary main-data__job-title mb-0 fst-italic"></h5>
+          <h2 class="mb-1 text-dark fw-bold text-uppercase">
+            <span class="fullname__firstname firstname-preview"></span>
+            <span class="fullname__name name-preview"></span>
+          </h2>
+          <h5 class="text-secondary main-data__job-title mb-0 fst-italic job-title-preview"></h5>
+          <h6 class="mb-0 text-muted main-data__introduction introduction-preview"></h6>
         </div>
 
         <!-- Expériences -->

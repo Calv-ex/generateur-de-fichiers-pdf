@@ -26,7 +26,9 @@
         <!-- Compétences -->
         <div class="mb-5 text-start">
           <h6 class="text-uppercase text-primary mb-3">Compétences</h6>
-          <div class="skills-preview small d-flex flex-column gap-2"></div>
+          <div class="skills-preview small d-flex flex-column gap-2">
+
+          </div>
         </div>
 
         <!-- Centres d’intérêt -->
@@ -43,10 +45,11 @@
         <!-- IDENTITÉ -->
         <div class="mb-5">
           <h2 class="mb-1 text-primary fw-bold">
-            <span class="fullname__firstname"></span>
-            <span class="fullname__name"></span>
+            <span class="fullname__firstname firstname-preview"></span>
+            <span class="fullname__name name-preview"></span>
           </h2>
-          <h5 class="text-muted main-data__job-title mb-0"></h5>
+          <h5 class="text-muted main-data__job-title mb-0 job-title-preview"></h5>
+          <h6 class="mb-0 text-muted main-data__introduction introduction-preview"></h6>
         </div>
 
         <!-- Expériences -->
@@ -54,7 +57,9 @@
           <h5 class="pb-2 mb-4 border-bottom border-primary">
             Expériences professionnelles
           </h5>
-          <div class="experiences-preview small d-flex flex-column gap-4"></div>
+          <div class="experiences-preview small d-flex flex-column">
+            
+          </div>
         </div>
 
         <!-- Formations -->
@@ -62,7 +67,7 @@
           <h5 class="pb-2 mb-4 border-bottom border-primary">
             Formations
           </h5>
-          <div class="courses-preview small d-flex flex-column gap-4"></div>
+          <div class="courses-preview small d-flex flex-column"></div>
         </div>
 
       </div>
