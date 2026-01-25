@@ -1,23 +1,24 @@
+import { cvState } from "./cvState.js";
 import { renderPreview } from "./renderPreview.js";
 
-export function templateSelection({ templatesContainer, previewZone })
-{
-  templatesContainer.addEventListener("click", (e) =>
-  {
+export function templateSelection({ templatesContainer, previewZone }) {
+  templatesContainer.addEventListener("click", (e) => {
     const card = e.target.closest(".card-template");
     if (!card) return;
 
     const templateName = card.dataset.templateName;
-    const fileName = templateName + ".php";
+    cvState.template = templateName;
 
-    fetch("../templates/" + fileName)
-      .then(res => res.text())
-      .then(html =>
-      {
+    fetch("../templates/" + templateName + ".php")
+      .then((res) => res.text())
+      .then((html) => {
         previewZone.innerHTML = html;
-
-        // 🔥 RECONSTRUIT LA PREVIEW DEPUIS LE STATE
         renderPreview();
       });
+
+    const templateCss = document.getElementById("template-css");
+    if (templateCss) {
+      templateCss.href = `../assets/css/templates/${templateName}.web.css`;
+    }
   });
 }

@@ -1,11 +1,6 @@
-/*
-Fichier qui stocke les données
-*/
-
-export const cvState = 
-{
-  identity:
-  {
+export const cvState = {
+  template: "1default",
+  identity: {
     firstname: "",
     name: "",
     jobTitle: "",
@@ -17,5 +12,5 @@ export const cvState =
   skills: [],
   hobbies: [],
   experiences: [],
-  courses: []
+  courses: [],
 };
